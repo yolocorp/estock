@@ -3,8 +3,8 @@ Simple logistical app with java for dependance optimization with UML analysis
 
 ## Build
 * Simply open project in your IDE
-or
 
+or
 * Run it via command lines
 
 ## Authors
