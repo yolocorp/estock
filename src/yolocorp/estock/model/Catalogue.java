@@ -70,7 +70,7 @@ public class Catalogue implements I_Catalogue {
 		for(I_Produit produit : this.produits) {
 			montant += produit.getPrixStockTTC();
 		}
-		return montant;
+		return Math.round(montant * 100) / 100;
 	}
 	
 	public String toString() {
