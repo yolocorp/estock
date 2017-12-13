@@ -1,12 +1,15 @@
 package yolocorp.estock.test;
-import static org.junit.Assert.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
+import yolocorp.estock.Mlnterface.I_Catalogue;
+import yolocorp.estock.Mlnterface.I_Produit;
 import yolocorp.estock.model.*
 ;
 public class CatalogueTest {
@@ -797,7 +800,10 @@ public class CatalogueTest {
 	
 	@Test
 	public void testClear() {
-		fail("A vous d'écrire le code de ce test");
+		I_Produit p1 = createProduit("Mars", 10, 1);
+		cat.addProduit(p1);
+		cat.clear();
+		assertArrayEquals("on supprime le contenu du catalogue", new String[0], cat.getNomProduits());
 	}
 
 	private I_Produit createProduit(String nom, double prixHT, int quantite) {

@@ -1,4 +1,4 @@
-package yolocorp.estock.model;
+package yolocorp.estock.Mlnterface;
 
 public interface I_Produit {
 

@@ -2,6 +2,8 @@ package yolocorp.estock.model;
 
 import java.math.BigDecimal;
 
+import yolocorp.estock.Mlnterface.I_Produit;
+
 public class Produit implements I_Produit {
 	
 	private int quantiteStock;
@@ -10,7 +12,7 @@ public class Produit implements I_Produit {
 	private double tauxTVA = 0.2;
 	
 	public Produit(String nom, double prixUnitaireHT, int quantiteStock) {
-		this.nom = nom;
+		this.nom = nom.trim().replace("\t",  " ");
 		this.prixUnitaireHT = prixUnitaireHT;
 		this.quantiteStock = quantiteStock;
 	}

@@ -3,56 +3,70 @@ package yolocorp.estock.model;
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
+
+import yolocorp.estock.Mlnterface.I_Catalogue;
+import yolocorp.estock.Mlnterface.I_Produit;
+import yolocorp.estock.util.ProduitComparator;
+
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Catalogue implements I_Catalogue {
 	
 	List<I_Produit> produits = new ArrayList<I_Produit>();
 	
 	public boolean addProduit(I_Produit produit) {
-		if(produit.getPrixUnitaireHT() > 0.0 && produit.getQuantite() > 0) {
-			return this.produits.add(produit);
+		if(produit != null && !this.isProduit(produit.getNom())) {
+			if(produit.getPrixUnitaireHT() > 0.0 && produit.getQuantite() >= 0) {
+				return this.produits.add(produit);
+			}
 		}
 		return false;
 	}
 	
 	public boolean addProduit(String nom, double prix, int qte) {
-		if(prix > 0.0 && qte > 0) {
-			Produit produit = new Produit(nom, prix, qte);
-			return this.produits.add((I_Produit) produit);
+		if(!this.isProduit(nom)) {
+			if(prix > 0.0 && qte >= 0) {
+				Produit produit = new Produit(nom, prix, qte);
+				return this.produits.add((I_Produit) produit);
+			}
 		}
-	 return false;
+		return false;
 	}
 	
 	public int addProduits(List<I_Produit> l) {
-		if(l.size() == 0) return 0;
+		if(l == null || l.size() == 0) return 0;
 		int res = 0;
 		for(I_Produit produit : l) {
-			if(produit.getPrixUnitaireHT() > 0 && produit.getQuantite() > 0) {
-				boolean boolRes = this.produits.add(produit);
-				int intRes = boolRes? res++ : -1;
+			if(produit != null && !isProduit(produit.getNom())) {
+				if(produit.getPrixUnitaireHT() > 0 && produit.getQuantite() >= 0) {
+					boolean boolRes = this.produits.add(produit);
+					res += boolRes? 1 : 0;
+				}
 			}
 		}
 		return res;
 	}
 	
 	public boolean removeProduit(String nom) {
-		boolean res = false;
-		for(Iterator<I_Produit> i = this.produits.iterator(); i.hasNext(); ) {
-			I_Produit produit = i.next();
+		for(int i = 0; i < this.produits.size(); i++) {
+			I_Produit produit = this.produits.get(i);
 			if(produit.getNom().equals(nom)) {
-				res = this.produits.remove(produit);
+				this.produits.remove(i);
+				return true;
 			}
 		}
-		return res;
+		return false;
 	}
 	
 	public boolean acheterStock(String nomProduit, int qteAchetee) {
 		boolean res = false;
-		for(I_Produit produit : this.produits) {
-			if(produit.getNom().equals(nomProduit)) {
-				produit.ajouter(qteAchetee);
-				res = true;
+		if(qteAchetee > 0) {
+			for(I_Produit produit : this.produits) {
+				if(produit.getNom().equals(nomProduit)) {
+					produit.ajouter(qteAchetee);
+					res = true;
+				}
 			}
 		}
 		return res;
@@ -60,10 +74,12 @@ public class Catalogue implements I_Catalogue {
 	
 	public boolean vendreStock(String nomProduit, int qteVendue) {
 		boolean res = false;
-		for(I_Produit produit : this.produits) {
-			if(produit.getNom().equals(nomProduit) && qteVendue <= produit.getQuantite()) {
-				produit.enlever(qteVendue);
-				res = true;
+		if(qteVendue > 0) {
+			for(I_Produit produit : this.produits) {
+				if(produit.getNom().equals(nomProduit) && qteVendue <= produit.getQuantite()) {
+					produit.enlever(qteVendue);
+					res = true;
+				}
 			}
 		}
 		return res;
@@ -71,6 +87,7 @@ public class Catalogue implements I_Catalogue {
 	
 	public String[] getNomProduits() {
 		String[] res = new String[this.produits.size()];
+		Collections.sort(this.produits, new ProduitComparator());
 		for(int i = 0; i < this.produits.size(); i++) {
 			res[i] = this.produits.get(i).getNom();
 		}
@@ -97,6 +114,14 @@ public class Catalogue implements I_Catalogue {
 
 	public void clear() {
 		this.produits = new ArrayList<I_Produit>();
+	}
+	
+	private boolean isProduit(String nomProduit) {
+		for(I_Produit produit: this.produits) {
+			if(produit.getNom().trim().equals(nomProduit.trim().replaceAll("\t", " ")))
+				return true;
+		}
+		return false;
 	}
 
 }
