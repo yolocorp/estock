@@ -7,7 +7,7 @@ public class Produit {
 	private double prixUnitaireHT;
 	private double tauxTVA = 0.2f;
 	
-	public Produit(String nom, float prixUnitaireHT, int quantiteStock) {
+	public Produit(String nom, double prixUnitaireHT, int quantiteStock) {
 		this.nom = nom;
 		this.prixUnitaireHT = prixUnitaireHT;
 		this.quantiteStock = quantiteStock;
