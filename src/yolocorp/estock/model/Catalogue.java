@@ -12,7 +12,7 @@ public class Catalogue implements I_Catalogue {
 		return this.produits.add(produit);
 	}
 	
-	public boolean addProduit(String nom, float prix, int qte) {
+	public boolean addProduit(String nom, double prix, int qte) {
 		Produit produit = new Produit(nom, prix, qte);
 		return this.produits.add((I_Produit) produit);
 	}
@@ -65,7 +65,7 @@ public class Catalogue implements I_Catalogue {
 		return res;
 	}
 	
-	public float getMontantTotalTTC() {
+	public double getMontantTotalTTC() {
 		float montant = 0f;
 		for(I_Produit produit : this.produits) {
 			montant += produit.getPrixStockTTC();
