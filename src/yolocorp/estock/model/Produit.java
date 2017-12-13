@@ -1,6 +1,6 @@
 package yolocorp.estock.model;
 
-public class Produit {
+public class Produit implements I_Produit {
 	
 	private int quantiteStock;
 	private String nom;
