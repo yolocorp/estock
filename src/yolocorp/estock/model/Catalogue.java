@@ -1,5 +1,6 @@
 package yolocorp.estock.model;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class Catalogue implements I_Catalogue {
 	public boolean vendreStock(String nomProduit, int qteVendue) {
 		boolean res = false;
 		for(I_Produit produit : this.produits) {
-			if(produit.getNom().equals(nomProduit)) {
+			if(produit.getNom().equals(nomProduit) && qteVendue <= produit.getQuantite()) {
 				produit.enlever(qteVendue);
 				res = true;
 			}
@@ -66,19 +67,21 @@ public class Catalogue implements I_Catalogue {
 	}
 	
 	public double getMontantTotalTTC() {
-		float montant = 0f;
+		double montant = 0.0;
 		for(I_Produit produit : this.produits) {
 			montant += produit.getPrixStockTTC();
 		}
-		return Math.round(montant * 100) / 100;
+		BigDecimal bd = new BigDecimal(montant);
+		bd= bd.setScale(2,BigDecimal.ROUND_HALF_EVEN);
+		return bd.doubleValue();
 	}
 	
 	public String toString() {
-		String res = "[ ";
+		String res = "";
 		for(I_Produit produit : this.produits) {
-			res += this.produits.toString() + ", ";
+			res += this.produits.toString() + "\r\n";
 		}
-		return res;
+		return res + "Montant total TTC du stock : " + this.getMontantTotalTTC() + " €";
 	}
 
 	public void clear() {

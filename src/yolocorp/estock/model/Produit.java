@@ -1,11 +1,13 @@
 package yolocorp.estock.model;
 
+import java.math.BigDecimal;
+
 public class Produit implements I_Produit {
 	
 	private int quantiteStock;
 	private String nom;
 	private double prixUnitaireHT;
-	private double tauxTVA = 0.2f;
+	private double tauxTVA = 0.2;
 	
 	public Produit(String nom, double prixUnitaireHT, int quantiteStock) {
 		this.nom = nom;
@@ -24,18 +26,15 @@ public class Produit implements I_Produit {
 	}
 	
 	public double getPrixUnitaireHT() {
-		double prixUnitaireHT = Math.round(this.prixUnitaireHT * 100)/100;
-		return prixUnitaireHT;
+		return this.prixUnitaireHT;
 	}
 	
 	public double getPrixUnitaireTTC(){
-		double prixUnitaireTTC = Math.round((this.prixUnitaireHT * tauxTVA) * 100)/100;
-		return prixUnitaireTTC;
+		return (this.getPrixUnitaireHT() * (1+this.tauxTVA));
 	}
 	
 	public double getPrixStockTTC(){
-		double prixStockTTC = Math.round((quantiteStock * getPrixUnitaireTTC()) * 100)/100;
-		return prixStockTTC;
+		return (quantiteStock * this.getPrixUnitaireTTC());
 	}
 	
 	public String getNom() {
@@ -47,7 +46,13 @@ public class Produit implements I_Produit {
 	}
 	
 	public String toString(){
-		return "Nom : " + getNom() + ", Quantit� : " + quantiteStock + ", Prix Unitaire HT : " + getPrixUnitaireHT()
-				+ ", Prix Unitaire TTC : " + getPrixUnitaireTTC() + ", Prix Stock TTC : " + getPrixStockTTC();
+		//Prix HT
+		BigDecimal HTRounded = new BigDecimal(this.getPrixUnitaireHT());
+		HTRounded= HTRounded.setScale(2,BigDecimal.ROUND_HALF_EVEN);
+		//Prix TTC
+		BigDecimal TTCRounded = new BigDecimal(this.getPrixUnitaireTTC());
+		TTCRounded= TTCRounded.setScale(2,BigDecimal.ROUND_HALF_EVEN);
+		return getNom() + " - prix HT : " + HTRounded.doubleValue() + " € - prix TTC : " + TTCRounded.doubleValue()
+				+ " € - quantité en stock : " + this.getQuantite();
 	}
 }
