@@ -10,19 +10,30 @@ public class Catalogue implements I_Catalogue {
 	List<I_Produit> produits = new ArrayList<I_Produit>();
 	
 	public boolean addProduit(I_Produit produit) {
-		return this.produits.add(produit);
+		if(produit.getPrixUnitaireHT() > 0.0 && produit.getQuantite() > 0) {
+			return this.produits.add(produit);
+		}
+		return false;
 	}
 	
 	public boolean addProduit(String nom, double prix, int qte) {
-		Produit produit = new Produit(nom, prix, qte);
-		return this.produits.add((I_Produit) produit);
+		if(prix > 0.0 && qte > 0) {
+			Produit produit = new Produit(nom, prix, qte);
+			return this.produits.add((I_Produit) produit);
+		}
+	 return false;
 	}
 	
 	public int addProduits(List<I_Produit> l) {
 		if(l.size() == 0) return 0;
-		boolean boolRes = this.produits.addAll(l);
-		int intRes = boolRes? l.size() : -1;
-		return intRes;
+		int res = 0;
+		for(I_Produit produit : l) {
+			if(produit.getPrixUnitaireHT() > 0 && produit.getQuantite() > 0) {
+				boolean boolRes = this.produits.add(produit);
+				int intRes = boolRes? res++ : -1;
+			}
+		}
+		return res;
 	}
 	
 	public boolean removeProduit(String nom) {
