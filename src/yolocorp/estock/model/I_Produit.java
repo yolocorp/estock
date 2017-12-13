@@ -6,9 +6,9 @@ public interface I_Produit {
 	public abstract boolean enlever(int qteVendue);
 	public abstract String getNom();
 	public abstract int getQuantite();
-	public abstract double getPrixUnitaireHT();
-	public abstract double getPrixUnitaireTTC();
-	public abstract double getPrixStockTTC();
+	public abstract float getPrixUnitaireHT();
+	public abstract float getPrixUnitaireTTC();
+	public abstract float getPrixStockTTC();
 	public abstract String toString();
 
 }
