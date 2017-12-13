@@ -4,8 +4,8 @@ public class Produit {
 	
 	private int quantiteStock;
 	private String nom;
-	private float prixUnitaireHT;
-	private float tauxTVA = 0.2f;
+	private double prixUnitaireHT;
+	private double tauxTVA = 0.2f;
 	
 	public Produit(String nom, float prixUnitaireHT, int quantiteStock) {
 		this.nom = nom;
@@ -23,16 +23,19 @@ public class Produit {
 		return true;
 	}
 	
-	public float getPrixUnitaireHT() {
-		return this.prixUnitaireHT;
+	public double getPrixUnitaireHT() {
+		double prixUnitaireHT = Math.round(this.prixUnitaireHT * 100)/100;
+		return prixUnitaireHT;
 	}
 	
-	public float getPrixUnitaireTTC(){
-		return this.prixUnitaireHT * tauxTVA;
+	public double getPrixUnitaireTTC(){
+		double prixUnitaireTTC = Math.round((this.prixUnitaireHT * tauxTVA) * 100)/100;
+		return prixUnitaireTTC;
 	}
 	
-	public float getPrixStockTTC(){
-		return quantiteStock * getPrixUnitaireTTC();
+	public double getPrixStockTTC(){
+		double prixStockTTC = Math.round((quantiteStock * getPrixUnitaireTTC()) * 100)/100;
+		return prixStockTTC;
 	}
 	
 	public String getNom() {
