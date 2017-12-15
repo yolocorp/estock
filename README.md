@@ -1,6 +1,9 @@
 # Estock
 Simple logistical app with java for dependance optimization with UML analysis
 
+## ToDo
+* Add JDBC driver for DB connection
+
 ## Build
 * Simply open project in your IDE
 
