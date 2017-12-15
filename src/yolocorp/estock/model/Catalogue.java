@@ -1,6 +1,7 @@
 package yolocorp.estock.model;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,7 +14,14 @@ import java.util.Collections;
 
 public class Catalogue implements I_Catalogue {
 	
-	List<I_Produit> produits = new ArrayList<I_Produit>();
+	private List<I_Produit> produits = new ArrayList<I_Produit>();
+	private static Catalogue cat = new Catalogue();
+	
+	private Catalogue() {}
+	
+	public static Catalogue getCatalogue() {
+		return cat;
+	}
 	
 	public boolean addProduit(I_Produit produit) {
 		if(produit != null && !this.isProduit(produit.getNom())) {
@@ -94,22 +102,29 @@ public class Catalogue implements I_Catalogue {
 		return res;
 	}
 	
+	public String[] getProduits() {
+		String[] res = new String[this.produits.size()];
+		Collections.sort(this.produits, new ProduitComparator());
+		for(int i = 0; i < this.produits.size(); i++) {
+			res[i] = this.produits.get(i).toString();
+		}
+		return res;
+	}
+	
 	public double getMontantTotalTTC() {
 		double montant = 0.0;
 		for(I_Produit produit : this.produits) {
 			montant += produit.getPrixStockTTC();
 		}
-		BigDecimal bd = new BigDecimal(montant);
-		bd= bd.setScale(2,BigDecimal.ROUND_HALF_EVEN);
-		return bd.doubleValue();
+		return doubleRounded(montant);
 	}
 	
 	public String toString() {
 		String res = "";
 		for(I_Produit produit : this.produits) {
-			res += this.produits.toString() + "\r\n";
+			res += produit.toString() + "\n";
 		}
-		return res + "Montant total TTC du stock : " + this.getMontantTotalTTC() + " €";
+		return res + "\n" + "Montant total TTC du stock : " + doubleToEuros(getMontantTotalTTC());
 	}
 
 	public void clear() {
@@ -122,6 +137,17 @@ public class Catalogue implements I_Catalogue {
 				return true;
 		}
 		return false;
+	}
+
+	private double doubleRounded(double dval) {
+		BigDecimal montantRounded = new BigDecimal(dval);
+		montantRounded = montantRounded.setScale(2,BigDecimal.ROUND_HALF_EVEN);
+		return montantRounded.doubleValue();
+	}
+	
+	private String doubleToEuros(double dvalue) {
+		NumberFormat formatter = NumberFormat.getCurrencyInstance(java.util.Locale.FRANCE);
+		return formatter.format(dvalue);
 	}
 
 }

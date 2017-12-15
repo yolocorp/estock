@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import yolocorp.estock.controller.GestionStockController;
+
 public class FenetreVente extends JFrame implements ActionListener {
 
 	private JButton btVente;
@@ -32,6 +34,7 @@ public class FenetreVente extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		GestionStockController.vendreProduit((String) combo.getSelectedItem(), txtQuantite.getText());
 		this.dispose();
 	}
 

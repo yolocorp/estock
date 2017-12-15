@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import yolocorp.estock.controller.GestionProduitController;
+
 public class FenetreSuppressionProduit extends JFrame implements ActionListener {
 
 	private JButton btSupprimer;
@@ -29,6 +31,7 @@ public class FenetreSuppressionProduit extends JFrame implements ActionListener 
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		GestionProduitController.removeProduit((String) combo.getSelectedItem());
 		this.dispose();
 	}
 

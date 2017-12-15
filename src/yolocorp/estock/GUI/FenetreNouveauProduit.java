@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import yolocorp.estock.controller.*;
+
 public class FenetreNouveauProduit extends JFrame implements ActionListener {
 
 	private JTextField txtPrixHT;
@@ -48,6 +50,7 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		GestionProduitController.addProduit(txtNom.getText(), txtPrixHT.getText(), txtQte.getText());
 		this.dispose();
 	}
 

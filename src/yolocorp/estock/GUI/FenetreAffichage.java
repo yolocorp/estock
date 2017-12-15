@@ -8,7 +8,7 @@ public class FenetreAffichage extends JFrame implements ActionListener {
 
 	private JButton btOK;
 	
-	public FenetreAffichage(String texte) {
+	public FenetreAffichage(String[] produits) {
 
 		setTitle("Affichage");
 		setBounds(500, 500, 450, 250);
@@ -17,14 +17,19 @@ public class FenetreAffichage extends JFrame implements ActionListener {
 		panHaut.setLayout(new BorderLayout());
 		panBas.setLayout(new FlowLayout());
 		
-		JTextArea jtaSortie = new JTextArea(texte,10,5);
 		btOK = new JButton("Quitter");
 		
 		
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		
+		String stringProduits = "";
+		for(String produit: produits) {
+			stringProduits += produit + "\n";
+		}
+		JTextArea jtaSortie = new JTextArea(stringProduits,10,5);
 		panHaut.add(jtaSortie);
+		
 		panBas.add(btOK);
 
 		contentPane.add(panHaut,"North");

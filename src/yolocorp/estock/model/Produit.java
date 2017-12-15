@@ -1,6 +1,7 @@
 package yolocorp.estock.model;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 import yolocorp.estock.Mlnterface.I_Produit;
 
@@ -49,12 +50,21 @@ public class Produit implements I_Produit {
 	
 	public String toString(){
 		//Prix HT
-		BigDecimal HTRounded = new BigDecimal(this.getPrixUnitaireHT());
-		HTRounded= HTRounded.setScale(2,BigDecimal.ROUND_HALF_EVEN);
+		String prixHT = doubleToEuros(doubleRounded(getPrixUnitaireHT()));
 		//Prix TTC
-		BigDecimal TTCRounded = new BigDecimal(this.getPrixUnitaireTTC());
-		TTCRounded= TTCRounded.setScale(2,BigDecimal.ROUND_HALF_EVEN);
-		return getNom() + " - prix HT : " + HTRounded.doubleValue() + " € - prix TTC : " + TTCRounded.doubleValue()
-				+ " € - quantité en stock : " + this.getQuantite();
+		String prixTTC = doubleToEuros(doubleRounded(getPrixUnitaireTTC()));
+		return getNom() + " - prix HT : " + prixHT + " - prix TTC : " + prixTTC
+				+ " - quantité en stock : " + this.getQuantite();
+	}
+	
+	private double doubleRounded(double dval) {
+		BigDecimal montantRounded = new BigDecimal(dval);
+		montantRounded = montantRounded.setScale(2,BigDecimal.ROUND_HALF_EVEN);
+		return montantRounded.doubleValue();
+	}
+	
+	private String doubleToEuros(double dvalue) {
+		NumberFormat formatter = NumberFormat.getCurrencyInstance(java.util.Locale.FRANCE);
+		return formatter.format(dvalue);
 	}
 }
