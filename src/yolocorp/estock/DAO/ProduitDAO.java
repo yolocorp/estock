@@ -15,8 +15,8 @@ import yolocorp.estock.model.Produit;
 
 public class ProduitDAO implements I_ProduitDAO {
 	
-	private static String selectAll = "SELECT produit_nom, produit_prix_ht, produit_quantite_stock FROM Produits;";
-	private static String removeProduit = "DELETE FROM Produits WHERE produit_nom = ?;";
+	private static String selectAll = "SELECT produit_nom, produit_prix_ht, produit_quantite_stock FROM Produits";
+	private static String removeProduit = "DELETE FROM Produits WHERE produit_nom = ?";
 	
 	private Connection cn;
 	
