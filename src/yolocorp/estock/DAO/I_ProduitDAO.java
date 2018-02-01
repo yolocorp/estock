@@ -2,7 +2,7 @@ package yolocorp.estock.DAO;
 
 import java.util.List;
 
-import yolocorp.estock.Mlnterface.I_Produit;
+import yolocorp.estock.model.I_Produit;
 
 public interface I_ProduitDAO {
 	

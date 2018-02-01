@@ -8,7 +8,7 @@ import org.jdom.*;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
-import yolocorp.estock.Mlnterface.I_Produit;
+import yolocorp.estock.model.I_Produit;
 import yolocorp.estock.model.Produit;
 
 

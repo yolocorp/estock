@@ -10,13 +10,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import yolocorp.estock.Mlnterface.I_Produit;
+import yolocorp.estock.model.I_Produit;
 import yolocorp.estock.model.Produit;
 
 public class ProduitDAO implements I_ProduitDAO {
 	
 	private static String selectAll = "SELECT produit_nom, produit_prix_ht, produit_quantite_stock FROM Produits";
 	private static String removeProduit = "DELETE FROM Produits WHERE produit_nom = ?";
+	private static String updateProduit = "UPDATE Produits SET produit_quantite_stock = ? WHERE produit_nom = ?";
 	
 	private Connection cn;
 	
@@ -36,7 +37,7 @@ public class ProduitDAO implements I_ProduitDAO {
 	public boolean addProduit(I_Produit produit) {
 		boolean res = false;
 		try {
-			CallableStatement cst = cn.prepareCall("{call addProduit(?,?,?)}");
+			CallableStatement cst = cn.prepareCall("{call procedure_add_produit(?,?,?)}");
 			cst.setString(1, produit.getNom());
 			cst.setDouble(2, produit.getPrixUnitaireHT());
 			cst.setInt(3, produit.getQuantite());
@@ -84,11 +85,10 @@ public class ProduitDAO implements I_ProduitDAO {
 	public boolean updateProduit (I_Produit produit) {
 		boolean res = false;
 		try {
-			CallableStatement cst = cn.prepareCall("{call updateProduit(?,?,?)}");
-			cst.setString(1, produit.getNom());
-			cst.setDouble(2, produit.getPrixUnitaireHT());
-			cst.setInt(3, produit.getQuantite());
-			int rows = cst.executeUpdate();
+			PreparedStatement pst = cn.prepareStatement(ProduitDAO.updateProduit);
+			pst.setString(2, produit.getNom());
+			pst.setInt(1, produit.getQuantite());
+			int rows = pst.executeUpdate();
 			if(rows == 1) res = true;
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -7,8 +7,6 @@ import java.util.List;
 
 import yolocorp.estock.DAO.I_ProduitDAO;
 import yolocorp.estock.DAO.ProduitDAO;
-import yolocorp.estock.Mlnterface.I_Catalogue;
-import yolocorp.estock.Mlnterface.I_Produit;
 import yolocorp.estock.util.ProduitComparator;
 
 import java.util.ArrayList;
@@ -42,6 +40,7 @@ public class Catalogue implements I_Catalogue {
 		if(!this.isProduit(nom)) {
 			if(prix > 0.0 && qte >= 0) {
 				Produit produit = new Produit(nom, prix, qte);
+				produitDAO.addProduit(produit);
 				return this.produits.add((I_Produit) produit);
 			}
 		}
@@ -66,7 +65,7 @@ public class Catalogue implements I_Catalogue {
 		for(int i = 0; i < this.produits.size(); i++) {
 			I_Produit produit = this.produits.get(i);
 			if(produit.getNom().equals(nom)) {
-				this.produitDAO.removeProduit(nom);
+				this.produitDAO.removeProduit(produit);
 				this.produits.remove(i);
 				return true;
 			}
@@ -80,6 +79,7 @@ public class Catalogue implements I_Catalogue {
 			for(I_Produit produit : this.produits) {
 				if(produit.getNom().equals(nomProduit)) {
 					produit.ajouter(qteAchetee);
+					produitDAO.updateProduit(produit);
 					res = true;
 				}
 			}
@@ -93,6 +93,7 @@ public class Catalogue implements I_Catalogue {
 			for(I_Produit produit : this.produits) {
 				if(produit.getNom().equals(nomProduit) && qteVendue <= produit.getQuantite()) {
 					produit.enlever(qteVendue);
+					produitDAO.updateProduit(produit);
 					res = true;
 				}
 			}

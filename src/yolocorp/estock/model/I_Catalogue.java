@@ -1,4 +1,4 @@
-package yolocorp.estock.Mlnterface;
+package yolocorp.estock.model;
 
 import java.util.List; 
 

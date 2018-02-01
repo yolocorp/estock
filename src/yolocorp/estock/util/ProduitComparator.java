@@ -2,7 +2,7 @@ package yolocorp.estock.util;
 
 import java.util.Comparator;
 
-import yolocorp.estock.Mlnterface.I_Produit;
+import yolocorp.estock.model.I_Produit;
 
 public class ProduitComparator implements Comparator<I_Produit> {
 	

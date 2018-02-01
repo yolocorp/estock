@@ -3,8 +3,6 @@ package yolocorp.estock.model;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
-import yolocorp.estock.Mlnterface.I_Produit;
-
 public class Produit implements I_Produit {
 	
 	private int quantiteStock;

@@ -8,8 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import yolocorp.estock.Mlnterface.I_Catalogue;
-import yolocorp.estock.Mlnterface.I_Produit;
 import yolocorp.estock.model.*
 ;
 public class CatalogueTest {

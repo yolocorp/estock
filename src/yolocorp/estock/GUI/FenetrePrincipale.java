@@ -25,7 +25,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 		//Agressive Loading
 		StockController.getProduits();
 		
-		setTitle("exercice Produits");
+		setTitle("Estock by Yolocorp");
 		setBounds(500, 500, 320, 250);
 		JPanel panAffichage = new JPanel();
 		JPanel panNouveauSupprimerProduit = new JPanel();
@@ -91,12 +91,12 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 //		if (e.getSource() == btSupprimerCategorie)
 //			new FenetreSuppressionCategorie(tabCategories);
 		if (e.getSource() == btAchat) {
-			//String[] tabProduits = StockController.getDetailProduits();
-			//new FenetreAchat(tabProduits);
+			String[] produits = StockController.getNomProduits();
+			new FenetreAchat(produits);
 		}
 		if (e.getSource() == btVente) {
-			//String[] tabProduits = StockController.getDetailProduits();
-			//new FenetreVente(tabProduits);
+			String[] produits = StockController.getNomProduits();
+			new FenetreVente(produits);
 		}
 		if (e.getSource() == btQuitter){
 			System.out.println("Au revoir");
