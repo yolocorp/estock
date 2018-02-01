@@ -5,6 +5,8 @@ import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.List;
 
+import yolocorp.estock.DAO.I_ProduitDAO;
+import yolocorp.estock.DAO.ProduitDAO;
 import yolocorp.estock.Mlnterface.I_Catalogue;
 import yolocorp.estock.Mlnterface.I_Produit;
 import yolocorp.estock.util.ProduitComparator;
@@ -17,7 +19,11 @@ public class Catalogue implements I_Catalogue {
 	private List<I_Produit> produits = new ArrayList<I_Produit>();
 	private static Catalogue cat = new Catalogue();
 	
-	private Catalogue() {}
+	private I_ProduitDAO produitDAO;
+	
+	private Catalogue() {
+		//produitDAO = new ProduitDAO();
+	}
 	
 	public static Catalogue getCatalogue() {
 		return cat;
@@ -102,13 +108,9 @@ public class Catalogue implements I_Catalogue {
 		return res;
 	}
 	
-	public String[] getProduits() {
-		String[] res = new String[this.produits.size()];
-		Collections.sort(this.produits, new ProduitComparator());
-		for(int i = 0; i < this.produits.size(); i++) {
-			res[i] = this.produits.get(i).toString();
-		}
-		return res;
+	public void getProduits() {
+		produitDAO = new ProduitDAO();
+		produits = produitDAO.getProduits();
 	}
 	
 	public double getMontantTotalTTC() {

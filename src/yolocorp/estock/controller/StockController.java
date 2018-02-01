@@ -6,13 +6,12 @@ public class StockController {
 	
 	private static Catalogue cat = Catalogue.getCatalogue();
 	
-	public static String[] getProduits() {
-		String[] nomProduits = cat.getNomProduits();
-		return nomProduits;
+	public static void getProduits() {
+		cat.getProduits();
 	}
 	
 	public static String[] getDetailProduits() {
-		String[] nomProduits = cat.getProduits();
+		String[] nomProduits = cat.getNomProduits();
 		return nomProduits;
 	}
 

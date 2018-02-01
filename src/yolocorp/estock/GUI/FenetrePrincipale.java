@@ -22,6 +22,8 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 
 	
 	public FenetrePrincipale() {
+		//Agressive Loading
+		StockController.getProduits();
 		
 		setTitle("exercice Produits");
 		setBounds(500, 500, 320, 250);
@@ -73,15 +75,15 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 //		String[] tabCategories = new String[] {"Bio", "Luxe" };
 		
 		if (e.getSource() == btAfficher) {
-			String[] tabProduits = StockController.getDetailProduits();
-			new FenetreAffichage(tabProduits);
+			StockController.getProduits();
+			new FenetreAffichage(StockController.getDetailProduits());
 		}
 		if (e.getSource() == btNouveauProduit) {
 //			new FenetreNouveauProduit(tabCategories);
 			new FenetreNouveauProduit();
 		}
 		if (e.getSource() == btSupprimerProduit) {
-			String[] tabProduits = StockController.getProduits();
+			String[] tabProduits = StockController.getDetailProduits();
 			new FenetreSuppressionProduit(tabProduits);
 		}
 //		if (e.getSource() == btNouvelleCategorie)
@@ -89,11 +91,11 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 //		if (e.getSource() == btSupprimerCategorie)
 //			new FenetreSuppressionCategorie(tabCategories);
 		if (e.getSource() == btAchat) {
-			String[] tabProduits = StockController.getProduits();
+			String[] tabProduits = StockController.getDetailProduits();
 			new FenetreAchat(tabProduits);
 		}
 		if (e.getSource() == btVente) {
-			String[] tabProduits = StockController.getProduits();
+			String[] tabProduits = StockController.getDetailProduits();
 			new FenetreVente(tabProduits);
 		}
 		if (e.getSource() == btQuitter){
