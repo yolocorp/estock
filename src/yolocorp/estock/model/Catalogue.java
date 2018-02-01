@@ -2,11 +2,10 @@ package yolocorp.estock.model;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.Iterator;
 import java.util.List;
 
+import yolocorp.estock.DAO.ConcreteFactoryProduitDAO;
 import yolocorp.estock.DAO.I_ProduitDAO;
-import yolocorp.estock.DAO.ProduitDAO;
 import yolocorp.estock.util.ProduitComparator;
 
 import java.util.ArrayList;
@@ -17,10 +16,12 @@ public class Catalogue implements I_Catalogue {
 	private List<I_Produit> produits = new ArrayList<I_Produit>();
 	private static Catalogue cat = new Catalogue();
 	
-	private I_ProduitDAO produitDAO;
+	private ConcreteFactoryProduitDAO factoryProduitDAO;
+	private I_ProduitDAO produitDAOSQL;
 	
 	private Catalogue() {
-		produitDAO = new ProduitDAO();
+		factoryProduitDAO = new ConcreteFactoryProduitDAO();
+		produitDAOSQL = factoryProduitDAO.createProduitDAOSQL();
 	}
 	
 	public static Catalogue getCatalogue() {
@@ -40,7 +41,7 @@ public class Catalogue implements I_Catalogue {
 		if(!this.isProduit(nom)) {
 			if(prix > 0.0 && qte >= 0) {
 				Produit produit = new Produit(nom, prix, qte);
-				produitDAO.addProduit(produit);
+				produitDAOSQL.addProduit(produit);
 				return this.produits.add((I_Produit) produit);
 			}
 		}
@@ -65,7 +66,7 @@ public class Catalogue implements I_Catalogue {
 		for(int i = 0; i < this.produits.size(); i++) {
 			I_Produit produit = this.produits.get(i);
 			if(produit.getNom().equals(nom)) {
-				this.produitDAO.removeProduit(produit);
+				this.produitDAOSQL.removeProduit(produit);
 				this.produits.remove(i);
 				return true;
 			}
@@ -79,7 +80,7 @@ public class Catalogue implements I_Catalogue {
 			for(I_Produit produit : this.produits) {
 				if(produit.getNom().equals(nomProduit)) {
 					produit.ajouter(qteAchetee);
-					produitDAO.updateProduit(produit);
+					produitDAOSQL.updateProduit(produit);
 					res = true;
 				}
 			}
@@ -93,7 +94,7 @@ public class Catalogue implements I_Catalogue {
 			for(I_Produit produit : this.produits) {
 				if(produit.getNom().equals(nomProduit) && qteVendue <= produit.getQuantite()) {
 					produit.enlever(qteVendue);
-					produitDAO.updateProduit(produit);
+					produitDAOSQL.updateProduit(produit);
 					res = true;
 				}
 			}
@@ -111,7 +112,7 @@ public class Catalogue implements I_Catalogue {
 	}
 	
 	public void getProduits() {
-		produits = produitDAO.getProduits();
+		produits = produitDAOSQL.getProduits();
 	}
 	
 	public double getMontantTotalTTC() {
