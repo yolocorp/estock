@@ -1,4 +1,4 @@
-package yolocorp.estock.model;
+package yolocorp.estock.DAO;
 
 import java.sql.*;
 
