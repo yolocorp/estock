@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.List;
 
-import yolocorp.estock.DAO.ConcreteFactoryProduitDAO;
 import yolocorp.estock.DAO.I_ProduitDAO;
 import yolocorp.estock.util.ProduitComparator;
 
@@ -13,25 +12,40 @@ import java.util.Collections;
 
 public class Catalogue implements I_Catalogue {
 	
+	private String nom;
+	private int nbProduits;
 	private List<I_Produit> produits = new ArrayList<I_Produit>();
-	private static Catalogue cat = new Catalogue();
+	//private static Catalogue cat = new Catalogue();
 	
-	private ConcreteFactoryProduitDAO factoryProduitDAO;
-	private I_ProduitDAO produitDAOSQL;
+	private I_ProduitDAO produitDAO;
 	
-	private Catalogue() {
-		factoryProduitDAO = new ConcreteFactoryProduitDAO();
-		produitDAOSQL = factoryProduitDAO.createProduitDAOSQL();
+	public Catalogue() {
+		//produitDAO = ConcreteFactoryProduitDAO.createProduitDAO("SQL");
 	}
 	
-	public static Catalogue getCatalogue() {
+	public Catalogue(I_ProduitDAO produitDao, String nom) {
+		this.produitDAO = produitDao;
+		this.nom = nom;
+	}
+	
+	public Catalogue(String nom, int nbProduits) {
+		this();
+		this.nom = nom;
+		this.nbProduits = nbProduits;
+	}
+	
+	/*public static Catalogue getCatalogue() {
 		return cat;
-	}
+	}*/
 	
 	public boolean addProduit(I_Produit produit) {
-		if(produit != null && !this.isProduit(produit.getNom())) {
+		if(!this.isProduit(produit.getNom())) {
 			if(produit.getPrixUnitaireHT() > 0.0 && produit.getQuantite() >= 0) {
-				return this.produits.add(produit);
+				if(produitDAO.addProduit(produit)) {
+					this.produits.add((I_Produit) produit);
+					this.nbProduits++;
+					return true;
+				}
 			}
 		}
 		return false;
@@ -41,8 +55,11 @@ public class Catalogue implements I_Catalogue {
 		if(!this.isProduit(nom)) {
 			if(prix > 0.0 && qte >= 0) {
 				Produit produit = new Produit(nom, prix, qte);
-				produitDAOSQL.addProduit(produit);
-				return this.produits.add((I_Produit) produit);
+				if(produitDAO.addProduit(produit)) {
+					this.produits.add((I_Produit) produit);
+					this.nbProduits++;
+					return true;
+				}
 			}
 		}
 		return false;
@@ -54,8 +71,7 @@ public class Catalogue implements I_Catalogue {
 		for(I_Produit produit : l) {
 			if(produit != null && !isProduit(produit.getNom())) {
 				if(produit.getPrixUnitaireHT() > 0 && produit.getQuantite() >= 0) {
-					boolean boolRes = this.produits.add(produit);
-					res += boolRes? 1 : 0;
+					this.produits.add(produit);
 				}
 			}
 		}
@@ -66,9 +82,11 @@ public class Catalogue implements I_Catalogue {
 		for(int i = 0; i < this.produits.size(); i++) {
 			I_Produit produit = this.produits.get(i);
 			if(produit.getNom().equals(nom)) {
-				this.produitDAOSQL.removeProduit(produit);
-				this.produits.remove(i);
-				return true;
+				if(this.produitDAO.removeProduit(produit)) {
+					this.produits.remove(i);
+					this.nbProduits--;
+					return true;
+				}
 			}
 		}
 		return false;
@@ -80,7 +98,7 @@ public class Catalogue implements I_Catalogue {
 			for(I_Produit produit : this.produits) {
 				if(produit.getNom().equals(nomProduit)) {
 					produit.ajouter(qteAchetee);
-					produitDAOSQL.updateProduit(produit);
+					produitDAO.updateProduit(produit);
 					res = true;
 				}
 			}
@@ -94,7 +112,7 @@ public class Catalogue implements I_Catalogue {
 			for(I_Produit produit : this.produits) {
 				if(produit.getNom().equals(nomProduit) && qteVendue <= produit.getQuantite()) {
 					produit.enlever(qteVendue);
-					produitDAOSQL.updateProduit(produit);
+					produitDAO.updateProduit(produit);
 					res = true;
 				}
 			}
@@ -111,8 +129,17 @@ public class Catalogue implements I_Catalogue {
 		return res;
 	}
 	
-	public void getProduits() {
-		produits = produitDAOSQL.getProduits();
+	public void getProduits(I_ProduitDAO dao) {
+		produits = produitDAO.getProduits();
+		nbProduits = produits.size();
+	}
+	
+	public String getNom() {
+		return this.nom;
+	}
+	
+	public int getNombreProduits() {
+		return this.nbProduits;
 	}
 	
 	public double getMontantTotalTTC() {

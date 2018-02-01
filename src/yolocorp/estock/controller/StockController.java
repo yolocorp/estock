@@ -4,17 +4,17 @@ import yolocorp.estock.model.*;
 
 public class StockController {
 	
-	private static Catalogue cat = Catalogue.getCatalogue();
+	private I_Catalogue cat;
 	
-	public static void getProduits() {
-		cat.getProduits();
+	public StockController (I_Catalogue cat) {
+		this.cat = cat;
 	}
 	
-	public static String[] getNomProduits () {
+	public String[] getNomProduits () {
 		return cat.getNomProduits();
 	}
 	
-	public static String getDetailProduits() {
+	public String getDetailProduits() {
 		String produits = cat.toString();
 		return produits;
 	}

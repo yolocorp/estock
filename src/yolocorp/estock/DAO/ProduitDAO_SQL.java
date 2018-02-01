@@ -15,29 +15,21 @@ import yolocorp.estock.model.Produit;
 
 public class ProduitDAO_SQL implements I_ProduitDAO {
 	
-	private static String selectAll = "SELECT produit_nom, produit_prix_ht, produit_quantite_stock FROM Produits";
-	private static String removeProduit = "DELETE FROM Produits WHERE produit_nom = ?";
-	private static String updateProduit = "UPDATE Produits SET produit_quantite_stock = ? WHERE produit_nom = ?";
+	private static String selectAll = "SELECT produit_nom, produit_prix_ht, produit_quantite_stock FROM Produits3";
+	private static String removeProduit = "DELETE FROM Produits3 WHERE produit_nom = ?";
+	private static String updateProduit = "UPDATE Produits3 SET produit_quantite_stock = ? WHERE produit_nom = ?";
 	
 	private Connection cn;
 	
-	public ProduitDAO_SQL() {
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			this.cn = DriverManager.getConnection("jdbc:oracle:thin:@162.38.222.149:1521:iut", "collety", "1108009694N");
-		} catch (SQLException e ) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	
+	public ProduitDAO_SQL(Connection cn) {
+		this.cn = cn;
 	}
 	
 	@Override
 	public boolean addProduit(I_Produit produit) {
 		boolean res = false;
 		try {
-			CallableStatement cst = cn.prepareCall("{call procedure_add_produit(?,?,?)}");
+			CallableStatement cst = cn.prepareCall("{call procedure_add_produit3(?,?,?)}");
 			cst.setString(1, produit.getNom());
 			cst.setDouble(2, produit.getPrixUnitaireHT());
 			cst.setInt(3, produit.getQuantite());
@@ -94,5 +86,11 @@ public class ProduitDAO_SQL implements I_ProduitDAO {
 			e.printStackTrace();
 		}
 		return res;
+	}
+
+	@Override
+	public I_DAO getDAO(String databaseType) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -19,11 +19,13 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 	private JButton btAchat;
 	private JButton btVente;
 	private JButton btQuitter;
+	
+	private CatalogueController ctrl;
 
 	
-	public FenetrePrincipale() {
-		//Agressive Loading
-		StockController.getProduits();
+	public FenetrePrincipale(CatalogueController ctrl) {
+		this.ctrl = ctrl;
+		ctrl.getCatalogue();
 		
 		setTitle("Estock by Yolocorp");
 		setBounds(500, 500, 320, 250);
@@ -75,15 +77,13 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 //		String[] tabCategories = new String[] {"Bio", "Luxe" };
 		
 		if (e.getSource() == btAfficher) {
-			StockController.getProduits();
-			new FenetreAffichage(StockController.getDetailProduits());
+			new FenetreAffichage(ctrl.getStockController().getDetailProduits());
 		}
 		if (e.getSource() == btNouveauProduit) {
-//			new FenetreNouveauProduit(tabCategories);
 			new FenetreNouveauProduit();
 		}
 		if (e.getSource() == btSupprimerProduit) {
-			String[] nomProduits = StockController.getNomProduits();
+			String[] nomProduits = ctrl.getStockController().getNomProduits();
 			new FenetreSuppressionProduit(nomProduits);
 		}
 //		if (e.getSource() == btNouvelleCategorie)
@@ -91,11 +91,11 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 //		if (e.getSource() == btSupprimerCategorie)
 //			new FenetreSuppressionCategorie(tabCategories);
 		if (e.getSource() == btAchat) {
-			String[] produits = StockController.getNomProduits();
+			String[] produits = ctrl.getStockController().getNomProduits();
 			new FenetreAchat(produits);
 		}
 		if (e.getSource() == btVente) {
-			String[] produits = StockController.getNomProduits();
+			String[] produits = ctrl.getStockController().getNomProduits();
 			new FenetreVente(produits);
 		}
 		if (e.getSource() == btQuitter){
@@ -115,11 +115,5 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 	public void windowDeiconified(WindowEvent arg0) {}
 	public void windowIconified(WindowEvent arg0) {}
 	public void windowOpened(WindowEvent arg0) {}
-
-	
-	
-	public static void main(String[] args) {
-		new FenetrePrincipale();
-	}
 
 }

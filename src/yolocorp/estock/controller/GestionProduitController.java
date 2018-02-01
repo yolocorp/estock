@@ -1,12 +1,16 @@
 package yolocorp.estock.controller;
 
-import yolocorp.estock.model.Catalogue;
+import yolocorp.estock.model.I_Catalogue;
 
 public class GestionProduitController {
 	
-	private static Catalogue cat = Catalogue.getCatalogue();
+	private I_Catalogue cat;
 	
-	public static void addProduit(String nomProduit, String prixProduitStr, String qteProduitStr) {
+	public GestionProduitController (I_Catalogue cat) {
+		this.cat = cat;
+	}
+	
+	public void addProduit(String nomProduit, String prixProduitStr, String qteProduitStr) {
 		double prixProduit = Double.parseDouble(prixProduitStr);
 		int qteProduit = Integer.parseInt(qteProduitStr);
 		if(nomProduit != null) {
@@ -16,7 +20,7 @@ public class GestionProduitController {
 		}
 	}
 	
-	public static void removeProduit(String nomProduit) {
+	public void removeProduit(String nomProduit) {
 		cat.removeProduit(nomProduit);		
 	}
 }
