@@ -10,9 +10,13 @@ public class StockController {
 		cat.getProduits();
 	}
 	
-	public static String[] getDetailProduits() {
-		String[] nomProduits = cat.getNomProduits();
-		return nomProduits;
+	public static String[] getNomProduits () {
+		return cat.getNomProduits();
+	}
+	
+	public static String getDetailProduits() {
+		String produits = cat.toString();
+		return produits;
 	}
 
 }

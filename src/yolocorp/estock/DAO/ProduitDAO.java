@@ -33,25 +33,27 @@ public class ProduitDAO implements I_ProduitDAO {
 	}
 	
 	@Override
-	public boolean addProduit(String nom, double prix, int qte) {
+	public boolean addProduit(I_Produit produit) {
+		boolean res = false;
 		try {
-			CallableStatement cst = cn.prepareCall("{call ajouterProduit(?,?,?)}");
-			cst.setString(1, nom);
-			cst.setDouble(2, prix);
-			cst.setInt(3, qte);
-			cst.execute();
+			CallableStatement cst = cn.prepareCall("{call addProduit(?,?,?)}");
+			cst.setString(1, produit.getNom());
+			cst.setDouble(2, produit.getPrixUnitaireHT());
+			cst.setInt(3, produit.getQuantite());
+			int rows = cst.executeUpdate();
+			if(rows == 1) res = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return res;
 	}
 	
 	@Override
-	public boolean removeProduit(String nom) {
+	public boolean removeProduit(I_Produit produit) {
 		boolean res = false;
 		try {
 			PreparedStatement pst = cn.prepareStatement(ProduitDAO.removeProduit);
-			pst.setString(1, nom);
+			pst.setString(1, produit.getNom());
 			int rows = pst.executeUpdate();
 			if(rows == 1) res = true;
 		} catch (SQLException e) {
@@ -63,13 +65,10 @@ public class ProduitDAO implements I_ProduitDAO {
 	@Override
 	public List<I_Produit> getProduits() {
 		List<I_Produit> produits = new ArrayList<I_Produit>();
-		System.out.println("coucou");
 		try {
 			PreparedStatement pst = cn.prepareStatement(ProduitDAO.selectAll);
 			ResultSet rs = pst.executeQuery();
-			System.out.println("coucouvbis");
 			while(rs.next()) {
-				System.out.println("4");
 				I_Produit produit = new Produit(rs.getString("produit_nom"),
 											rs.getDouble("produit_prix_ht"),
 											rs.getInt("produit_quantite_stock"));
@@ -79,5 +78,21 @@ public class ProduitDAO implements I_ProduitDAO {
 			e.printStackTrace();
 		}
 		return produits;
+	}
+	
+	@Override
+	public boolean updateProduit (I_Produit produit) {
+		boolean res = false;
+		try {
+			CallableStatement cst = cn.prepareCall("{call updateProduit(?,?,?)}");
+			cst.setString(1, produit.getNom());
+			cst.setDouble(2, produit.getPrixUnitaireHT());
+			cst.setInt(3, produit.getQuantite());
+			int rows = cst.executeUpdate();
+			if(rows == 1) res = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 }

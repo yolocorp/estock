@@ -83,20 +83,20 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 			new FenetreNouveauProduit();
 		}
 		if (e.getSource() == btSupprimerProduit) {
-			String[] tabProduits = StockController.getDetailProduits();
-			new FenetreSuppressionProduit(tabProduits);
+			String[] nomProduits = StockController.getNomProduits();
+			new FenetreSuppressionProduit(nomProduits);
 		}
 //		if (e.getSource() == btNouvelleCategorie)
 //			new FenetreNouvelleCategorie();
 //		if (e.getSource() == btSupprimerCategorie)
 //			new FenetreSuppressionCategorie(tabCategories);
 		if (e.getSource() == btAchat) {
-			String[] tabProduits = StockController.getDetailProduits();
-			new FenetreAchat(tabProduits);
+			//String[] tabProduits = StockController.getDetailProduits();
+			//new FenetreAchat(tabProduits);
 		}
 		if (e.getSource() == btVente) {
-			String[] tabProduits = StockController.getDetailProduits();
-			new FenetreVente(tabProduits);
+			//String[] tabProduits = StockController.getDetailProduits();
+			//new FenetreVente(tabProduits);
 		}
 		if (e.getSource() == btQuitter){
 			System.out.println("Au revoir");

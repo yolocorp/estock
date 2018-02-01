@@ -22,7 +22,7 @@ public class Catalogue implements I_Catalogue {
 	private I_ProduitDAO produitDAO;
 	
 	private Catalogue() {
-		//produitDAO = new ProduitDAO();
+		produitDAO = new ProduitDAO();
 	}
 	
 	public static Catalogue getCatalogue() {
@@ -66,6 +66,7 @@ public class Catalogue implements I_Catalogue {
 		for(int i = 0; i < this.produits.size(); i++) {
 			I_Produit produit = this.produits.get(i);
 			if(produit.getNom().equals(nom)) {
+				this.produitDAO.removeProduit(nom);
 				this.produits.remove(i);
 				return true;
 			}
@@ -109,7 +110,6 @@ public class Catalogue implements I_Catalogue {
 	}
 	
 	public void getProduits() {
-		produitDAO = new ProduitDAO();
 		produits = produitDAO.getProduits();
 	}
 	
