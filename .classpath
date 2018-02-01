@@ -12,5 +12,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/yoann/Downloads/BD-20171222/Exercice V 02/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/yoann/Downloads/Exercice E 05 partie 2/jdom.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
